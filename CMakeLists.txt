@@ -12,12 +12,11 @@ else()
 	set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unknown-pragmas")
 endif()
 
-project(observer-test)
+project(observer-pattern-test)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin)
 
-add_executable(observer-test
-	"src/main.cpp"
-)
+add_executable(observer-test "src/main.cpp")
+add_executable(mock "src/mock.cpp")

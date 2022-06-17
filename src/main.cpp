@@ -1,35 +1,10 @@
 #include <iostream>
 #include <string>
-#include <vector>
 
-class Observer {
-    friend class Subject;
+#include "observer.hpp"
+#include "subject.hpp"
 
-public:
-    virtual ~Observer() {}
-
-    virtual void update(Subject* subject) = 0;
-};
-
-class Subject {
-    std::vector<Observer*> m_observers;
-
-public:
-    virtual ~Subject() {}
-
-    void addObserver(Observer* observer) {
-        m_observers.emplace_back(observer);
-    }
-
-protected:
-    void notify() {
-        for (auto& observer : m_observers) {
-            observer->update(this);
-        }
-    }
-};
-
-class Model : public Subject {
+class Model : public ISubject {
     std::string m_text = "";
 
 public:
@@ -43,9 +18,9 @@ public:
     }
 };
 
-class UI : public Observer {
+class UI : public IObserver {
 public:
-    void update(Subject* subject) override {
+    void update(ISubject* subject) override {
         std::cout << reinterpret_cast<Model*>(subject)->getText() << std::endl;
     }
 };

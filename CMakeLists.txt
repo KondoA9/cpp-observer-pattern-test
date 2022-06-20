@@ -20,3 +20,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin)
 
 add_executable(observer-test "src/main.cpp")
 add_executable(mock "src/mock.cpp")
+add_executable(state "src/state.cpp")

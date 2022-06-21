@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.1)
 
 enable_language(CXX)
+enable_testing()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -18,6 +19,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin)
 
-add_executable(observer-test "src/main.cpp")
-add_executable(mock "src/mock.cpp")
-add_executable(state "src/state.cpp")
+include_directories("src/")
+
+add_executable(case1 "test/case1.cpp")
+add_test(NAME case1 COMMAND case1)

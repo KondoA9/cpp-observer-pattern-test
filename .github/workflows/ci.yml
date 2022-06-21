@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ci:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: mkdir build
+        run: mkdir build/
+
+      - name: Configure
+        run: cmake ..
+        working-directory: ./build
+
+      - name: Build
+        run: cmake --build .
+        working-directory: ./build
+
+      - name: Test
+        run: ctest -C debug
+        working-directory: ./build

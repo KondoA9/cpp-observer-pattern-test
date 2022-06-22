@@ -7,6 +7,9 @@
 #include "stateInterface.hpp"
 
 template <typename T>
+class StateGroup;
+
+template <typename T>
 class State final : public IState {
     using OnChangeFuncType = std::function<void(const T& current, const T& previous)>;
 

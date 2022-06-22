@@ -3,12 +3,16 @@
 class IState {
     friend class IStateGroup;
 
-protected:
+private:
     const size_t m_id;
     size_t m_groupId = 0;
 
 public:
-    IState(size_t id) : m_id(id) {}
+    explicit IState(size_t id);
+
+    IState(const IState&) = delete;
+
+    IState& operator=(const IState&) = delete;
 
     virtual ~IState() = default;
 
@@ -21,5 +25,7 @@ public:
     }
 
 protected:
-    virtual void callOnChange() const = 0;
+    void setGroupId(size_t id) {
+        m_groupId = id;
+    }
 };

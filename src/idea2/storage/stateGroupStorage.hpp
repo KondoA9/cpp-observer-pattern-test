@@ -6,6 +6,7 @@
 class IStateGroup;
 
 class StateGroupStorage {
+    size_t m_id = 1;
     std::vector<std::shared_ptr<IStateGroup>> m_stateGroups;
 
 private:
@@ -15,4 +16,8 @@ private:
 
 public:
     static std::shared_ptr<IStateGroup> Get(size_t id);
+
+    static void Store(const std::shared_ptr<IStateGroup>& group);
+
+    static void Release(size_t id);
 };

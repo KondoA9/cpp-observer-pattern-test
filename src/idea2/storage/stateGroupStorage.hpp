@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-class IStateGroup;
+#include "../stateGroup/stateGroupInterface.hpp"
 
 class StateGroupStorage {
     size_t m_id = 1;

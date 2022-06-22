@@ -6,7 +6,6 @@
 #include "../stateGroup/stateGroupInterface.hpp"
 
 class StateGroupStorage {
-    size_t m_id = 1;
     std::vector<std::shared_ptr<IStateGroup>> m_stateGroups;
 
 private:

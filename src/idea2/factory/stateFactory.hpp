@@ -4,7 +4,7 @@
 
 #include "../factory/stateGroupFactory.hpp"
 #include "../state/state.hpp"
-#include "../stateGroup/stateGroup.hpp"
+#include "../stateGroup/stateGroupInterface.hpp"
 #include "../storage/stateStorage.hpp"
 
 class StateFactory {
@@ -21,7 +21,7 @@ private:
 public:
     template <typename T>
     static State<T>& Create(const T& value = T()) {
-        auto state = std::shared_ptr<State<T>>(new State<T>(Instance().m_id++));
+        const auto state = std::shared_ptr<State<T>>(new State<T>(Instance().m_id++));
         StateStorage::Store(state);
 
         IStateGroup& stateGroup = StateGroupFactory::Create<T>(value);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 class IState {
     friend class IStateGroup;
 
@@ -8,7 +10,7 @@ private:
     size_t m_groupId = 0;
 
 public:
-    explicit IState(size_t id);
+    explicit IState(size_t id) : m_id(id) {}
 
     IState(const IState&) = delete;
 

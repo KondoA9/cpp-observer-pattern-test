@@ -1,6 +1,6 @@
 #include "stateGroupStorage.hpp"
 
-#include "stateGroup/stateGroup.hpp"
+#include "stateGroup/stateGroupInterface.hpp"
 
 StateGroupStorage& StateGroupStorage::Instance() {
     static StateGroupStorage instance;

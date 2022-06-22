@@ -1,5 +1,7 @@
 #include "stateStorage.hpp"
 
+#include "state/stateInterface.hpp"
+
 StateStorage& StateStorage::Instance() {
     static StateStorage instance;
     return instance;

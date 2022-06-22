@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "../state/stateInterface.hpp"
+class IState;
 
 class IStateGroup {
 private:

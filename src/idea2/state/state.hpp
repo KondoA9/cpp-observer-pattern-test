@@ -1,10 +1,8 @@
 #pragma once
 
 #include <functional>
-#include <iostream>
 
-#include "../factory/stateGroupFactory.hpp"
-#include "../stateGroup/stateGroupInterface.hpp"
+#include "../stateGroup/stateGroup.hpp"
 #include "../storage/stateGroupStorage.hpp"
 #include "stateInterface.hpp"
 

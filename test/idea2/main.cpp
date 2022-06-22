@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "factory/stateFactory.hpp"
 
 int main() {

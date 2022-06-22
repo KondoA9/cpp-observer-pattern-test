@@ -18,7 +18,7 @@ private:
 public:
     template <typename T>
     static IStateGroup& Create(const T& value) {
-        auto group = std::shared_ptr<StateGroup<T>>(new StateGroup<T>(Instance().m_id++, value));
+        const auto group = std::shared_ptr<StateGroup<T>>(new StateGroup<T>(Instance().m_id++, value));
         StateGroupStorage::Store(group);
         return *group.get();
     }

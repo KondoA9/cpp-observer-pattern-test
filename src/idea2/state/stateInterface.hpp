@@ -11,7 +11,7 @@ private:
     size_t m_groupId = 0;
 
 public:
-    explicit IState(size_t id) : m_id(id) {}
+    IState() = delete;
 
     IState(const IState&) = delete;
 
@@ -20,6 +20,8 @@ public:
     virtual ~IState() = default;
 
 protected:
+    explicit IState(size_t id) : m_id(id) {}
+
     size_t id() const {
         return m_id;
     }

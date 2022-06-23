@@ -28,6 +28,4 @@ public:
     }
 
     void add(size_t id);
-
-    void remove(size_t id);
 };

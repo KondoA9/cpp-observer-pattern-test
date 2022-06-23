@@ -27,9 +27,9 @@ public:
 
     void bindTo(const State& state) {
         // Bind if not in the same group
-        if (groupId() != state.groupId()) {
+        if (_stateGroupId() != state._stateGroupId()) {
             const auto group = state.getGroup();
-            group->add(id());
+            group->add(_stateId());
         }
     }
 

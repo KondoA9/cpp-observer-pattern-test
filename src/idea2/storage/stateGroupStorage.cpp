@@ -20,14 +20,3 @@ std::shared_ptr<IStateGroup> StateGroupStorage::Get(size_t id) {
 void StateGroupStorage::Store(const std::shared_ptr<IStateGroup>& state) {
     Instance().m_stateGroups.emplace_back(state);
 }
-
-void StateGroupStorage::Release(size_t id) {
-    for (size_t i = 0; i < Instance().m_stateGroups.size(); i++) {
-        auto& stateGroup = Instance().m_stateGroups[i];
-        if (stateGroup->stateGroupId() == id) {
-            stateGroup.reset();
-            Instance().m_stateGroups.erase(Instance().m_stateGroups.begin() + i);
-            break;
-        }
-    }
-}

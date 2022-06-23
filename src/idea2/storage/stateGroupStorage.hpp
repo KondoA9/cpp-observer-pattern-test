@@ -5,7 +5,7 @@
 
 #include "../stateGroup/stateGroupInterface.hpp"
 
-class StateGroupStorage {
+class StateGroupStorage final {
     std::vector<std::shared_ptr<IStateGroup>> m_stateGroups;
 
 private:
@@ -17,6 +17,4 @@ public:
     static std::shared_ptr<IStateGroup> Get(size_t id);
 
     static void Store(const std::shared_ptr<IStateGroup>& group);
-
-    static void Release(size_t id);
 };

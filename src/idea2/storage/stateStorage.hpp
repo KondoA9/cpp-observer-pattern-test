@@ -5,7 +5,7 @@
 
 class IState;
 
-class StateStorage {
+class StateStorage final {
     std::vector<std::shared_ptr<IState>> m_states;
 
 private:

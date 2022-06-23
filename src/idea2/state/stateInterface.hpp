@@ -5,7 +5,6 @@
 
 class IState {
     friend class IStateGroup;
-    friend class StateStorage;
 
 private:
     const size_t m_id;
@@ -20,16 +19,16 @@ public:
 
     virtual ~IState() = default;
 
-protected:
-    explicit IState(size_t id) : m_id(id) {}
-
-    size_t id() const {
+    size_t _stateId() const {
         return m_id;
     }
 
-    size_t groupId() const {
+    size_t _stateGroupId() const {
         return m_groupId;
     }
+
+protected:
+    explicit IState(size_t id) : m_id(id) {}
 
     std::shared_ptr<IStateGroup> getGroup() const;
 

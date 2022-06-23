@@ -4,7 +4,8 @@
 
 #include "../stateGroup/stateGroup.hpp"
 
-class StateGroupFactory {
+class StateGroupFactory final {
+private:
     size_t m_id = 1;
 
 public:
@@ -18,10 +19,7 @@ public:
 private:
     StateGroupFactory() = default;
 
-    static StateGroupFactory& Instance() {
-        static StateGroupFactory instance;
-        return instance;
-    }
+    static StateGroupFactory& Instance();
 
     static void StoreGroup(const std::shared_ptr<IStateGroup>& group);
 };

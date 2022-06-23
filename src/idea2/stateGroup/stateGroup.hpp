@@ -8,10 +8,8 @@
 
 template <typename T>
 class StateGroup final : public IStateGroup {
+    friend class State<T>;
     friend class StateGroupFactory;
-
-    template <typename T>
-    friend class State;
 
 private:
     std::shared_ptr<T> m_value = nullptr;

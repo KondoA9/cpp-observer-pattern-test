@@ -13,10 +13,8 @@ template <typename T>
 class State final : public IState {
     using OnChangeFuncType = std::function<void(const T& current, const T& previous)>;
 
+    friend class StateGroup<T>;
     friend class StateFactory;
-
-    template <typename T>
-    friend class StateGroup;
 
 private:
     OnChangeFuncType m_onChange;

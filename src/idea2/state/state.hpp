@@ -3,7 +3,6 @@
 #include <functional>
 
 #include "../stateGroup/stateGroup.hpp"
-#include "../storage/stateGroupStorage.hpp"
 #include "stateInterface.hpp"
 
 template <typename T>
@@ -23,15 +22,13 @@ public:
     State() = delete;
 
     const T& value() const {
-        const auto group = StateGroupStorage::Get(groupId());
-        return std::dynamic_pointer_cast<StateGroup<T>>(group)->value();
+        return std::dynamic_pointer_cast<StateGroup<T>>(getGroup())->value();
     }
 
     void bindTo(const State& state) {
         // Bind if not in the same group
         if (groupId() != state.groupId()) {
-            const auto group = StateGroupStorage::Get(state.groupId());
-            setGroupId(group->stateGroupId());
+            const auto group = state.getGroup();
             group->add(id());
         }
     }
@@ -41,7 +38,7 @@ public:
     }
 
     void setValue(const T& newValue) {
-        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(StateGroupStorage::Get(groupId()));
+        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(getGroup());
         group->fireOnChange(newValue, value());
         group->setValue(newValue);
     }

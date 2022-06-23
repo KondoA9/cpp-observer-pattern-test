@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <memory>
 
 class IState {
     friend class IStateGroup;
@@ -30,6 +31,9 @@ protected:
         return m_groupId;
     }
 
+    std::shared_ptr<IStateGroup> getGroup() const;
+
+private:
     void setGroupId(size_t id) {
         m_groupId = id;
     }

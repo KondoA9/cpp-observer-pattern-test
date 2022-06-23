@@ -14,7 +14,7 @@ std::shared_ptr<IState> StateStorage::Get(size_t id) {
         }
     }
 
-    return nullptr;
+    throw std::exception("StateStorage::Get(): Unstored state identifier");
 }
 
 void StateStorage::Store(const std::shared_ptr<IState>& state) {

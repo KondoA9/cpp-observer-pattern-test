@@ -14,7 +14,7 @@ std::shared_ptr<IStateGroup> StateGroupStorage::Get(size_t id) {
         }
     }
 
-    return nullptr;
+    throw std::exception("StateGroupStorage::Get(): Unstored state group identifier");
 }
 
 void StateGroupStorage::Store(const std::shared_ptr<IStateGroup>& state) {

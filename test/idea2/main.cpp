@@ -1,33 +1,112 @@
+#include <assert.h>
+
 #include <iostream>
 
 #include "factory/stateFactory.hpp"
 
+class View {
+private:
+    State<bool>& m_toggleButtonState = StateFactory::Create<bool>(true);
+    State<std::string>& m_inputText  = StateFactory::Create<std::string>("placeholder");
+
+public:
+    View() {
+        m_toggleButtonState.onChange(
+            [](auto current, auto) { std::cout << "View: toggle is " << (current ? "true" : "false") << std::endl; });
+    }
+
+    bool getToggleState() const {
+        return m_toggleButtonState.value();
+    }
+
+    std::string getInputText() const {
+        return m_inputText.value();
+    }
+
+    void bindToggleState(const State<bool>& state) {
+        m_toggleButtonState.bindTo(state);
+    }
+
+    void bintInputField(const State<std::string>& state) {
+        m_inputText.bindTo(state);
+    }
+
+    void toggle() {
+        m_toggleButtonState.setValue(!m_toggleButtonState.value());
+    }
+
+    void input(const std::string& str) {
+        m_inputText.setValue(m_inputText.value() + str);
+    }
+};
+
+class Model {
+private:
+    State<bool>& m_Enabled     = StateFactory::Create<bool>(false);
+    State<std::string>& m_text = StateFactory::Create<std::string>("");
+    State<int>& m_intValue     = StateFactory::Create<int>(0);
+
+public:
+    Model() {
+        m_Enabled.onChange([](auto current, auto) {
+            std::cout << "Model: m_enabled is " << (current ? "enabled" : "disabled") << std::endl;
+        });
+        m_text.onChange([](auto current, auto) { std::cout << "Model: text is " << current << std::endl; });
+    }
+
+    const State<bool>& stateEnabled() const {
+        return m_Enabled;
+    }
+
+    const State<std::string>& stateText() const {
+        return m_text;
+    }
+
+    const State<int>& stateIntValue() const {
+        return m_intValue;
+    }
+};
+
+class ViewController {
+private:
+    View m_view;
+    Model m_model;
+
+    State<int>& m_intValue = StateFactory::Create<int>(1);
+
+public:
+    void run() {
+        m_view.bindToggleState(m_model.stateEnabled());
+        m_view.bintInputField(m_model.stateText());
+        assert(m_model.stateEnabled() == false && m_view.getToggleState() == m_model.stateEnabled());
+
+        m_view.toggle();
+        assert(m_model.stateEnabled() == true && m_view.getToggleState() == m_model.stateEnabled());
+
+        m_view.toggle();
+        assert(m_model.stateEnabled() == false && m_view.getToggleState() == m_model.stateEnabled());
+
+        m_view.input("a");
+        assert(m_model.stateText() == "a" && m_view.getInputText() == m_model.stateText());
+
+        m_view.input("bcd");
+        assert(m_model.stateText() == "abcd" && m_view.getInputText() == m_model.stateText());
+
+        assert(m_intValue != m_model.stateIntValue());
+        assert(m_intValue > m_model.stateIntValue());
+
+        assert(m_model.stateIntValue() != m_intValue);
+        assert(m_model.stateIntValue() < m_intValue);
+
+        m_intValue.bindTo(m_model.stateIntValue());
+        assert(m_intValue == m_model.stateIntValue());
+    }
+};
+
 int main() {
-    const auto onChange = [](const int& current, const int& prev) {
-        std::cout << "onChange()"
-                  << " current=" << current << ", previous=" << prev << std::endl;
-    };
+    ViewController vc;
 
-    auto& state1 = StateFactory::Create<int>(1);
-    auto& state2 = StateFactory::Create<int>(2);
-    auto& state3 = StateFactory::Create<int>(3);
-
-    state1.onChange(onChange);
-    state2.onChange(onChange);
-    state3.onChange(onChange);
-
-    state1.setValue(101);
-    state2.setValue(102);
-
-    std::cout << "bind 1 to 2" << std::endl;
-    state1.bindTo(state2);
-
-    state1.setValue(5);
-
-    std::cout << "bind 3 to 1 & 2" << std::endl;
-    state3.bindTo(state2);
-
-    state1.setValue(6);
+    vc.run();
 
     return 0;
 }

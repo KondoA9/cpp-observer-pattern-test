@@ -23,7 +23,7 @@ public:
 
     virtual ~IStateGroup() = default;
 
-    size_t id() const {
+    size_t stateGroupId() const {
         return m_id;
     }
 

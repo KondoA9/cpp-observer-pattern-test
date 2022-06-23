@@ -18,11 +18,11 @@ public:
 
     virtual ~IState() = default;
 
-    size_t id() const {
+    size_t stateId() const {
         return m_id;
     }
 
-    size_t groupId() const {
+    size_t stateGroupId() const {
         return m_groupId;
     }
 

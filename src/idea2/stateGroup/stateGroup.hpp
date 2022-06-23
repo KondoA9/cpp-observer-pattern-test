@@ -10,6 +10,9 @@ template <typename T>
 class StateGroup final : public IStateGroup {
     friend class StateGroupFactory;
 
+    template <typename T>
+    friend class State;
+
 private:
     std::shared_ptr<T> m_value = nullptr;
 
@@ -24,12 +27,12 @@ public:
         *m_value = value;
     }
 
+private:
+    StateGroup(size_t id, const T& value) : IStateGroup(id), m_value(std::make_shared<T>(value)) {}
+
     void fireOnChange(const T& current, const T& previous) {
         for (auto& state : m_states) {
             std::dynamic_pointer_cast<State<T>>(state)->fireOnChange(current, previous);
         }
     }
-
-private:
-    StateGroup(size_t id, const T& value) : IStateGroup(id), m_value(std::make_shared<T>(value)) {}
 };

@@ -15,6 +15,9 @@ class State final : public IState {
 
     friend class StateFactory;
 
+    template <typename T>
+    friend class StateGroup;
+
 private:
     OnChangeFuncType m_onChange;
 
@@ -22,7 +25,7 @@ public:
     State() = delete;
 
     const T& value() const {
-        const auto group = StateGroupStorage::Get(groupId());
+        const auto group = StateGroupStorage::Get(stateGroupId());
         return std::dynamic_pointer_cast<StateGroup<T>>(group)->value();
     }
 
@@ -31,26 +34,60 @@ public:
     }
 
     void setValue(const T& newValue) {
-        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(StateGroupStorage::Get(groupId()));
+        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(StateGroupStorage::Get(stateGroupId()));
         group->fireOnChange(newValue, value());
         group->setValue(newValue);
     }
 
     void bindTo(const State& state) {
         // Bind if not in the same group
-        if (groupId() != state.groupId()) {
-            const auto group = StateGroupStorage::Get(state.groupId());
-            setGroupId(group->id());
-            group->add(id());
+        if (stateGroupId() != state.stateGroupId()) {
+            const auto group = StateGroupStorage::Get(state.stateGroupId());
+            setGroupId(group->stateGroupId());
+            group->add(stateId());
         }
     }
+
+    operator const T&() const& {
+        return value();
+    }
+
+    operator const T&&() const&& {
+        return value();
+    }
+
+    bool operator==(const State<T>& other) const {
+        return value() == other.value();
+    }
+
+    bool operator!=(const State<T>& other) const {
+        return value() != other.value();
+    }
+
+    bool operator==(const T& val) const {
+        return value() == val;
+    }
+
+    bool operator!=(const T& val) const {
+        return value() != val;
+    }
+
+private:
+    explicit State(size_t id) : IState(id) {}
 
     void fireOnChange(const T& current, const T& previous) {
         if (m_onChange) {
             m_onChange(current, previous);
         }
     }
-
-private:
-    explicit State(size_t id) : IState(id) {}
 };
+
+template <typename T>
+bool operator==(const T& value, const State<T>& state) {
+    return value == state.value();
+}
+
+template <typename T>
+bool operator!=(const T& value, const State<T>& state) {
+    return value != state.value();
+}

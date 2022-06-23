@@ -24,11 +24,11 @@ public:
     }
 
     void bindToggleState(const State<bool>& state) {
-        m_toggleButtonState.bindTo(state);
+        m_toggleButtonState.bind(state);
     }
 
     void bintInputField(const State<std::string>& state) {
-        m_inputText.bindTo(state);
+        m_inputText.bind(state);
     }
 
     void toggle() {
@@ -98,7 +98,7 @@ public:
         assert(m_model.stateIntValue() != m_intValue);
         assert(m_model.stateIntValue() < m_intValue);
 
-        m_intValue.bindTo(m_model.stateIntValue());
+        m_intValue.bind(m_model.stateIntValue());
         assert(m_intValue == m_model.stateIntValue());
     }
 };

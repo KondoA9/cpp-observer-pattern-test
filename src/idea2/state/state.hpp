@@ -25,7 +25,7 @@ public:
         return std::dynamic_pointer_cast<StateGroup<T>>(getGroup())->value();
     }
 
-    void bindTo(const State& state) {
+    void bind(const State& state) {
         // Bind if not in the same group
         if (_stateGroupId() != state._stateGroupId()) {
             const auto group = state.getGroup();

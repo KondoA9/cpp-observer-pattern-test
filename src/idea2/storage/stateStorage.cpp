@@ -1,5 +1,7 @@
 #include "stateStorage.hpp"
 
+#include <stdexcept>
+
 #include "state/stateInterface.hpp"
 
 StateStorage& StateStorage::Instance() {
@@ -14,7 +16,7 @@ std::shared_ptr<IState> StateStorage::Get(size_t id) {
         }
     }
 
-    throw std::exception("StateStorage::Get(): Unstored state identifier");
+    throw std::runtime_error("StateStorage::Get(): Unstored state identifier");
 }
 
 void StateStorage::Store(const std::shared_ptr<IState>& state) {

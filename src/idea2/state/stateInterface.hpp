@@ -1,10 +1,11 @@
 #pragma once
 
-#include <cstddef>
 #include <memory>
 
+#include "../stateGroup/stateGroupInterface.hpp"
+
 class IState {
-    friend class IStateGroup;
+    friend IStateGroup;
 
 private:
     const size_t m_id;

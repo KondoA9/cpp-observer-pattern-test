@@ -4,6 +4,7 @@
 
 class IState {
     friend class IStateGroup;
+    friend class StateStorage;
 
 private:
     const size_t m_id;
@@ -18,15 +19,15 @@ public:
 
     virtual ~IState() = default;
 
-    size_t stateId() const {
+protected:
+    size_t id() const {
         return m_id;
     }
 
-    size_t stateGroupId() const {
+    size_t groupId() const {
         return m_groupId;
     }
 
-protected:
     void setGroupId(size_t id) {
         m_groupId = id;
     }

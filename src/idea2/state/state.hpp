@@ -23,27 +23,27 @@ public:
     State() = delete;
 
     const T& value() const {
-        const auto group = StateGroupStorage::Get(stateGroupId());
+        const auto group = StateGroupStorage::Get(groupId());
         return std::dynamic_pointer_cast<StateGroup<T>>(group)->value();
-    }
-
-    void onChange(const OnChangeFuncType& func) {
-        m_onChange = func;
-    }
-
-    void setValue(const T& newValue) {
-        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(StateGroupStorage::Get(stateGroupId()));
-        group->fireOnChange(newValue, value());
-        group->setValue(newValue);
     }
 
     void bindTo(const State& state) {
         // Bind if not in the same group
-        if (stateGroupId() != state.stateGroupId()) {
-            const auto group = StateGroupStorage::Get(state.stateGroupId());
+        if (groupId() != state.groupId()) {
+            const auto group = StateGroupStorage::Get(state.groupId());
             setGroupId(group->stateGroupId());
-            group->add(stateId());
+            group->add(id());
         }
+    }
+
+    void setOnChange(const OnChangeFuncType& func) {
+        m_onChange = func;
+    }
+
+    void setValue(const T& newValue) {
+        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(StateGroupStorage::Get(groupId()));
+        group->fireOnChange(newValue, value());
+        group->setValue(newValue);
     }
 
     operator const T&() const& {

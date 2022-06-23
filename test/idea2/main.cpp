@@ -11,7 +11,7 @@ private:
 
 public:
     View() {
-        m_toggleButtonState.onChange(
+        m_toggleButtonState.setOnChange(
             [](auto current, auto) { std::cout << "View: toggle is " << (current ? "true" : "false") << std::endl; });
     }
 
@@ -48,10 +48,10 @@ private:
 
 public:
     Model() {
-        m_Enabled.onChange([](auto current, auto) {
+        m_Enabled.setOnChange([](auto current, auto) {
             std::cout << "Model: m_enabled is " << (current ? "enabled" : "disabled") << std::endl;
         });
-        m_text.onChange([](auto current, auto) { std::cout << "Model: text is " << current << std::endl; });
+        m_text.setOnChange([](auto current, auto) { std::cout << "Model: text is " << current << std::endl; });
     }
 
     const State<bool>& stateEnabled() const {

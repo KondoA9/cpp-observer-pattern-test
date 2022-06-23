@@ -9,7 +9,7 @@ StateStorage& StateStorage::Instance() {
 
 std::shared_ptr<IState> StateStorage::Get(size_t id) {
     for (const auto& state : Instance().m_states) {
-        if (state->stateId() == id) {
+        if (state->id() == id) {
             return state;
         }
     }

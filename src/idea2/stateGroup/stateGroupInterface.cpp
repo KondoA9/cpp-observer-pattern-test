@@ -13,7 +13,7 @@ void IStateGroup::add(size_t id) {
 void IStateGroup::remove(size_t id) {
     for (size_t i = 0; i < m_states.size(); i++) {
         const auto& state = m_states[i];
-        if (state->stateId() == id) {
+        if (state->id() == id) {
             m_states.erase(m_states.begin() + i);
             break;
         }

@@ -17,7 +17,7 @@ public:
         StateStorage::Store(state);
 
         IStateGroup& stateGroup = StateGroupFactory::Create<T>(value);
-        stateGroup.add(state->stateId());
+        stateGroup.add(state->id());
 
         return *state.get();
     }

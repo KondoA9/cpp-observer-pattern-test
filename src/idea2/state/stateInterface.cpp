@@ -1,5 +1,6 @@
 #include "stateInterface.hpp"
 
+#include "stateGroup/stateGroupInterface.hpp"
 #include "storage/stateGroupStorage.hpp"
 
 namespace Internal {

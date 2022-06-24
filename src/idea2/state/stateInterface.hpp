@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "../stateGroup/stateGroupInterface.hpp"
-
 namespace Internal {
+    class IStateGroup;
+
     class IState {
         friend class IStateGroup;
 

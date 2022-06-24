@@ -8,6 +8,7 @@ namespace Internal {
 }
 
 class StateStorage final {
+private:
     std::vector<std::shared_ptr<Internal::IState>> m_states;
 
 private:

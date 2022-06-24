@@ -6,6 +6,7 @@
 #include "../stateGroup/stateGroupInterface.hpp"
 
 class StateGroupStorage final {
+private:
     std::vector<std::shared_ptr<Internal::IStateGroup>> m_stateGroups;
 
 private:

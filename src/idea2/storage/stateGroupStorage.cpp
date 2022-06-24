@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "findElement.hpp"
 #include "stateGroup/stateGroupInterface.hpp"
 
 StateGroupStorage& StateGroupStorage::Instance() {
@@ -10,13 +11,16 @@ StateGroupStorage& StateGroupStorage::Instance() {
 }
 
 std::shared_ptr<Internal::IStateGroup> StateGroupStorage::Get(size_t id) {
-    for (const auto& stateGroup : Instance().m_stateGroups) {
-        if (stateGroup->stateGroupId() == id) {
-            return stateGroup;
-        }
-    }
+    using StateGroupPtr = std::shared_ptr<Internal::IStateGroup>;
 
-    throw std::runtime_error("StateGroupStorage::Get(): Unstored state group identifier");
+    const auto result = findElement<StateGroupPtr>(
+        Instance().m_stateGroups, id, [](const StateGroupPtr& stateGroup) { return stateGroup->stateGroupId(); });
+
+    if (result.has_value()) {
+        return Instance().m_stateGroups[result.value()];
+    } else {
+        throw std::runtime_error("StateGroupStorage::Get(): Unstored state group identifier");
+    }
 }
 
 void StateGroupStorage::Store(const std::shared_ptr<Internal::IStateGroup>& state) {

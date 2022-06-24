@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "findElement.hpp"
 #include "state/stateInterface.hpp"
 
 StateStorage& StateStorage::Instance() {
@@ -10,13 +11,16 @@ StateStorage& StateStorage::Instance() {
 }
 
 std::shared_ptr<Internal::IState> StateStorage::Get(size_t id) {
-    for (const auto& state : Instance().m_states) {
-        if (state->_stateId() == id) {
-            return state;
-        }
-    }
+    using StatePtr = std::shared_ptr<Internal::IState>;
 
-    throw std::runtime_error("StateStorage::Get(): Unstored state identifier");
+    const auto result =
+        findElement<StatePtr>(Instance().m_states, id, [](const StatePtr& state) { return state->_stateId(); });
+
+    if (result.has_value()) {
+        return Instance().m_states[result.value()];
+    } else {
+        throw std::runtime_error("StateStorage::Get(): Unstored state identifier");
+    }
 }
 
 void StateStorage::Store(const std::shared_ptr<Internal::IState>& state) {

@@ -24,13 +24,13 @@ public:
     State() = delete;
 
     const T& value() const {
-        return getGroup<T>().value();
+        return getGroup().value();
     }
 
     void bind(const State& state) {
         // Bind if not in the same group
         if (_stateGroupId() != state._stateGroupId()) {
-            auto& group = state.getGroup<T>();
+            auto& group = state.getGroup();
             group.addState(_stateId());
         }
     }
@@ -40,7 +40,7 @@ public:
     }
 
     void setValue(const T& newValue) {
-        auto& group = getGroup<T>();
+        auto& group = getGroup();
         group.fireOnChange(newValue, value());
         group.setValue(newValue);
     }
@@ -72,7 +72,6 @@ public:
 private:
     explicit State(size_t id, size_t groupId) : Internal::IState(id, groupId) {}
 
-    template <typename T>
     Internal::StateGroup<T>& getGroup() const {
         return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
     }

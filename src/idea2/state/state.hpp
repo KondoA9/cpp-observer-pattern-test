@@ -21,8 +21,6 @@ private:
     OnChangeFuncType m_onChange;
 
 public:
-    State() = delete;
-
     const T& value() const {
         return getGroup().value();
     }
@@ -70,13 +68,13 @@ public:
     }
 
 private:
-    explicit State(size_t id, size_t groupId) : Internal::IState(id, groupId) {}
+    using Internal::IState::IState;
 
     Internal::StateGroup<T>& getGroup() const {
         return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
     }
 
-    void fireOnChange(const T& current, const T& previous) {
+    void fireOnChange(const T& current, const T& previous) const {
         if (m_onChange) {
             m_onChange(current, previous);
         }

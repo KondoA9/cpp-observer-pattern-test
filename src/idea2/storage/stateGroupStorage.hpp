@@ -3,11 +3,15 @@
 #include <memory>
 #include <vector>
 
-#include "../stateGroup/stateGroupInterface.hpp"
+namespace Internal {
+    class IStateGroup;
+}
 
 class StateGroupStorage final {
+    using StateGroupPtr = std::shared_ptr<Internal::IStateGroup>;
+
 private:
-    std::vector<std::shared_ptr<Internal::IStateGroup>> m_stateGroups;
+    std::vector<StateGroupPtr> m_stateGroups;
 
 private:
     StateGroupStorage() = default;
@@ -15,7 +19,7 @@ private:
     static StateGroupStorage& Instance();
 
 public:
-    static std::shared_ptr<Internal::IStateGroup> Get(size_t id);
+    static StateGroupPtr Get(size_t id);
 
-    static void Store(const std::shared_ptr<Internal::IStateGroup>& group);
+    static void Store(const StateGroupPtr& group);
 };

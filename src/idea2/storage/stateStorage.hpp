@@ -8,8 +8,10 @@ namespace Internal {
 }
 
 class StateStorage final {
+    using StatePtr = std::shared_ptr<Internal::IState>;
+
 private:
-    std::vector<std::shared_ptr<Internal::IState>> m_states;
+    std::vector<StatePtr> m_states;
 
 private:
     StateStorage() = default;
@@ -17,7 +19,7 @@ private:
     static StateStorage& Instance();
 
 public:
-    static std::shared_ptr<Internal::IState> Get(size_t id);
+    static StatePtr Get(size_t id);
 
-    static void Store(const std::shared_ptr<Internal::IState>& state);
+    static void Store(const StatePtr& state);
 };

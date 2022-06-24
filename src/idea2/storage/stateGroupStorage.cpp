@@ -10,9 +10,7 @@ StateGroupStorage& StateGroupStorage::Instance() {
     return instance;
 }
 
-std::shared_ptr<Internal::IStateGroup> StateGroupStorage::Get(size_t id) {
-    using StateGroupPtr = std::shared_ptr<Internal::IStateGroup>;
-
+StateGroupStorage::StateGroupPtr StateGroupStorage::Get(size_t id) {
     const auto result = findElement<StateGroupPtr>(
         Instance().m_stateGroups, id, [](const StateGroupPtr& stateGroup) { return stateGroup->stateGroupId(); });
 
@@ -23,6 +21,6 @@ std::shared_ptr<Internal::IStateGroup> StateGroupStorage::Get(size_t id) {
     }
 }
 
-void StateGroupStorage::Store(const std::shared_ptr<Internal::IStateGroup>& state) {
+void StateGroupStorage::Store(const StateGroupPtr& state) {
     Instance().m_stateGroups.emplace_back(state);
 }

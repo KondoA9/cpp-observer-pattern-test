@@ -3,29 +3,31 @@
 #include <memory>
 #include <vector>
 
-class IState;
+namespace Internal {
+    class IState;
 
-class IStateGroup {
-private:
-    const size_t m_id;
+    class IStateGroup {
+    private:
+        const size_t m_id;
 
-protected:
-    std::vector<std::shared_ptr<IState>> m_states;
+    protected:
+        std::vector<std::shared_ptr<IState>> m_states;
 
-public:
-    IStateGroup() = delete;
+    public:
+        IStateGroup() = delete;
 
-    IStateGroup(const IStateGroup&) = delete;
+        IStateGroup(const IStateGroup&) = delete;
 
-    IStateGroup& operator=(const IStateGroup&) = delete;
+        IStateGroup& operator=(const IStateGroup&) = delete;
 
-    explicit IStateGroup(size_t id) : m_id(id) {}
+        explicit IStateGroup(size_t id) : m_id(id) {}
 
-    virtual ~IStateGroup() = default;
+        virtual ~IStateGroup() = default;
 
-    size_t stateGroupId() const {
-        return m_id;
-    }
+        size_t stateGroupId() const {
+            return m_id;
+        }
 
-    void add(size_t id);
-};
+        void add(size_t id);
+    };
+}

@@ -7,6 +7,6 @@ StateFactory& StateFactory::Instance() {
     return instance;
 }
 
-void StateFactory::StoreState(const std::shared_ptr<IState>& state) {
+void StateFactory::StoreState(const std::shared_ptr<Internal::IState>& state) {
     StateStorage::Store(state);
 }

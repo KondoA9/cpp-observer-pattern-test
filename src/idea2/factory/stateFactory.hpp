@@ -16,7 +16,7 @@ public:
         const auto state = std::shared_ptr<State<T>>(new State<T>(Instance().m_id++));
         StoreState(state);
 
-        IStateGroup& stateGroup = StateGroupFactory::Create<T>(value);
+        auto& stateGroup = Internal::StateGroupFactory::Create<T>(value);
         stateGroup.add(state->_stateId());
 
         return *state.get();
@@ -27,5 +27,5 @@ private:
 
     static StateFactory& Instance();
 
-    static void StoreState(const std::shared_ptr<IState>& state);
+    static void StoreState(const std::shared_ptr<Internal::IState>& state);
 };

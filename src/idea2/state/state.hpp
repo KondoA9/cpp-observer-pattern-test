@@ -5,14 +5,16 @@
 #include "../stateGroup/stateGroup.hpp"
 #include "stateInterface.hpp"
 
-template <typename T>
-class StateGroup;
+namespace Internal {
+    template <typename T>
+    class StateGroup;
+}
 
 template <typename T>
-class State final : public IState {
+class State final : public Internal::IState {
     using OnChangeFuncType = std::function<void(const T& current, const T& previous)>;
 
-    friend class StateGroup<T>;
+    friend class Internal::StateGroup<T>;
     friend class StateFactory;
 
 private:
@@ -22,7 +24,7 @@ public:
     State() = delete;
 
     const T& value() const {
-        return std::dynamic_pointer_cast<StateGroup<T>>(getGroup())->value();
+        return std::dynamic_pointer_cast<Internal::StateGroup<T>>(getGroup())->value();
     }
 
     void bind(const State& state) {
@@ -38,7 +40,7 @@ public:
     }
 
     void setValue(const T& newValue) {
-        const auto group = std::dynamic_pointer_cast<StateGroup<T>>(getGroup());
+        const auto group = std::dynamic_pointer_cast<Internal::StateGroup<T>>(getGroup());
         group->fireOnChange(newValue, value());
         group->setValue(newValue);
     }
@@ -68,7 +70,7 @@ public:
     }
 
 private:
-    explicit State(size_t id) : IState(id) {}
+    explicit State(size_t id) : Internal::IState(id) {}
 
     void fireOnChange(const T& current, const T& previous) {
         if (m_onChange) {

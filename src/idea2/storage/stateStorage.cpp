@@ -9,7 +9,7 @@ StateStorage& StateStorage::Instance() {
     return instance;
 }
 
-std::shared_ptr<IState> StateStorage::Get(size_t id) {
+std::shared_ptr<Internal::IState> StateStorage::Get(size_t id) {
     for (const auto& state : Instance().m_states) {
         if (state->_stateId() == id) {
             return state;
@@ -19,6 +19,6 @@ std::shared_ptr<IState> StateStorage::Get(size_t id) {
     throw std::runtime_error("StateStorage::Get(): Unstored state identifier");
 }
 
-void StateStorage::Store(const std::shared_ptr<IState>& state) {
+void StateStorage::Store(const std::shared_ptr<Internal::IState>& state) {
     Instance().m_states.emplace_back(state);
 }

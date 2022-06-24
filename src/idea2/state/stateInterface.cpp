@@ -2,6 +2,8 @@
 
 #include "storage/stateGroupStorage.hpp"
 
-std::shared_ptr<IStateGroup> IState::getGroup() const {
-    return StateGroupStorage::Get(_stateGroupId());
+namespace Internal {
+    std::shared_ptr<IStateGroup> IState::getGroup() const {
+        return StateGroupStorage::Get(_stateGroupId());
+    }
 }

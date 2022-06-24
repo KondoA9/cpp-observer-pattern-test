@@ -9,7 +9,7 @@ StateGroupStorage& StateGroupStorage::Instance() {
     return instance;
 }
 
-std::shared_ptr<IStateGroup> StateGroupStorage::Get(size_t id) {
+std::shared_ptr<Internal::IStateGroup> StateGroupStorage::Get(size_t id) {
     for (const auto& stateGroup : Instance().m_stateGroups) {
         if (stateGroup->stateGroupId() == id) {
             return stateGroup;
@@ -19,6 +19,6 @@ std::shared_ptr<IStateGroup> StateGroupStorage::Get(size_t id) {
     throw std::runtime_error("StateGroupStorage::Get(): Unstored state group identifier");
 }
 
-void StateGroupStorage::Store(const std::shared_ptr<IStateGroup>& state) {
+void StateGroupStorage::Store(const std::shared_ptr<Internal::IStateGroup>& state) {
     Instance().m_stateGroups.emplace_back(state);
 }

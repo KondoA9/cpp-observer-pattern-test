@@ -70,7 +70,7 @@ public:
     }
 
 private:
-    explicit State(size_t id) : Internal::IState(id) {}
+    explicit State(size_t id, size_t groupId) : Internal::IState(id, groupId) {}
 
     template <typename T>
     Internal::StateGroup<T>& getGroup() const {

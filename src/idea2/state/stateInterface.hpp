@@ -10,7 +10,7 @@ namespace Internal {
 
     private:
         const size_t m_id;
-        size_t m_groupId = 0;
+        size_t m_groupId;
 
     public:
         IState() = delete;
@@ -30,7 +30,7 @@ namespace Internal {
         }
 
     protected:
-        explicit IState(size_t id) : m_id(id) {}
+        IState(size_t id, size_t groupId);
 
         IStateGroup& getGroupInterface() const;
 

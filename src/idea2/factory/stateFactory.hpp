@@ -13,10 +13,11 @@ private:
 public:
     template <typename T>
     static State<T>& Create(const T& value = T()) {
-        const auto state = std::shared_ptr<State<T>>(new State<T>(Instance().m_id++));
+        auto& stateGroup = Internal::StateGroupFactory::Create<T>(value);
+
+        const auto state = std::shared_ptr<State<T>>(new State<T>(Instance().m_id++, stateGroup.stateGroupId()));
         StoreState(state);
 
-        auto& stateGroup = Internal::StateGroupFactory::Create<T>(value);
         stateGroup.addState(state->_stateId());
 
         return *state.get();

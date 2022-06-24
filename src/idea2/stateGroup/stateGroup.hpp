@@ -26,7 +26,7 @@ namespace Internal {
     private:
         StateGroup(size_t id, const T& value) : IStateGroup(id), m_value(std::make_shared<T>(value)) {}
 
-        void fireOnChange(const T& current, const T& previous) const {
+        void fireOnChangeOfAllStates(const T& current, const T& previous) const {
             for (const auto& state : m_states) {
                 static_cast<State<T>&>(*state.get()).fireOnChange(current, previous);
             }

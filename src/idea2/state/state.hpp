@@ -39,7 +39,7 @@ public:
 
     void setValue(const T& newValue) {
         auto& group = getGroup();
-        group.fireOnChange(newValue, value());
+        group.fireOnChangeOfAllStates(newValue, value());
         group.setValue(newValue);
     }
 

@@ -32,7 +32,7 @@ namespace Internal {
     protected:
         explicit IState(size_t id) : m_id(id) {}
 
-        std::shared_ptr<IStateGroup> getGroup() const;
+        IStateGroup& getGroupInterface() const;
 
     private:
         void setGroupId(size_t id) {

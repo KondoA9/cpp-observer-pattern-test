@@ -17,7 +17,7 @@ public:
         StoreState(state);
 
         auto& stateGroup = Internal::StateGroupFactory::Create<T>(value);
-        stateGroup.add(state->_stateId());
+        stateGroup.addState(state->_stateId());
 
         return *state.get();
     }

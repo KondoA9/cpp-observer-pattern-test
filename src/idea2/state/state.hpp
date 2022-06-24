@@ -24,14 +24,14 @@ public:
     State() = delete;
 
     const T& value() const {
-        return std::dynamic_pointer_cast<Internal::StateGroup<T>>(getGroup())->value();
+        return getGroup<T>().value();
     }
 
     void bind(const State& state) {
         // Bind if not in the same group
         if (_stateGroupId() != state._stateGroupId()) {
-            const auto group = state.getGroup();
-            group->add(_stateId());
+            auto& group = state.getGroup<T>();
+            group.addState(_stateId());
         }
     }
 
@@ -40,9 +40,9 @@ public:
     }
 
     void setValue(const T& newValue) {
-        const auto group = std::dynamic_pointer_cast<Internal::StateGroup<T>>(getGroup());
-        group->fireOnChange(newValue, value());
-        group->setValue(newValue);
+        auto& group = getGroup<T>();
+        group.fireOnChange(newValue, value());
+        group.setValue(newValue);
     }
 
     operator const T&() const& {
@@ -71,6 +71,11 @@ public:
 
 private:
     explicit State(size_t id) : Internal::IState(id) {}
+
+    template <typename T>
+    Internal::StateGroup<T>& getGroup() const {
+        return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
+    }
 
     void fireOnChange(const T& current, const T& previous) {
         if (m_onChange) {

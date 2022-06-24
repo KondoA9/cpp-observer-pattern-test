@@ -31,7 +31,7 @@ namespace Internal {
 
         void fireOnChange(const T& current, const T& previous) {
             for (auto& state : m_states) {
-                std::dynamic_pointer_cast<State<T>>(state)->fireOnChange(current, previous);
+                static_cast<State<T>&>(*state.get()).fireOnChange(current, previous);
             }
         }
     };

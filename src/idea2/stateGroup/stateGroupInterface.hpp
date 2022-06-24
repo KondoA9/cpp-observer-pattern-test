@@ -28,6 +28,6 @@ namespace Internal {
             return m_id;
         }
 
-        void add(size_t id);
+        void addState(size_t id);
     };
 }

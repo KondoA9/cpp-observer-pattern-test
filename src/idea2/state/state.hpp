@@ -55,10 +55,10 @@ public:
         group.setValue(newValue);
     }
 
-    void setValue(const std::function<void(T& value)>& func) const {
+    void setValue(const std::function<void(T& value)>& setter) const {
         const auto prevValue = value();
         auto& group          = getGroup();
-        func(group.valueRef());
+        setter(group.valueRef());
         group.fireOnChangeOfAllStates(value(), prevValue);
     }
 

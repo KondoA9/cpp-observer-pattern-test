@@ -49,10 +49,17 @@ public:
         setOnChangeImpl(std::bind(func), inherit);
     }
 
-    void setValue(const T& newValue) {
+    void setValue(const T& newValue) const {
         auto& group = getGroup();
         group.fireOnChangeOfAllStates(newValue, value());
         group.setValue(newValue);
+    }
+
+    void setValue(const std::function<void(T& value)>& func) const {
+        const auto prevValue = value();
+        auto& group          = getGroup();
+        func(group.valueRef());
+        group.fireOnChangeOfAllStates(value(), prevValue);
     }
 
     operator const T&() const {

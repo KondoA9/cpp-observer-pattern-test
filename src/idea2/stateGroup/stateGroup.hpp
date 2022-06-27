@@ -17,11 +17,15 @@ namespace Internal {
         std::shared_ptr<T> m_value = nullptr;
 
     public:
+        T& valueRef() const {
+            return *m_value.get();
+        }
+
         const T& value() const {
             return *m_value.get();
         }
 
-        void setValue(const T& value) {
+        void setValue(const T& value) const {
             *m_value = value;
         }
 

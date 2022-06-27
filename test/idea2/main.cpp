@@ -100,6 +100,12 @@ public:
 
         m_intValue.bind(m_model.stateIntValue());
         assert(m_intValue == m_model.stateIntValue());
+
+        m_intValue.setValue([](int& state) {
+            state = 3;
+            std::cout << "effect: set value to 3" << std::endl;
+        });
+        assert(m_intValue == 3 && m_intValue == m_model.stateIntValue());
     }
 };
 

@@ -5,10 +5,12 @@
 #include "../state/state.hpp"
 #include "stateGroupInterface.hpp"
 
+template <typename T>
+class State;
+
 namespace Internal {
     template <typename T>
     class StateGroup final : public IStateGroup {
-        friend class State<T>;
         friend class StateGroupFactory;
 
     private:
@@ -23,13 +25,13 @@ namespace Internal {
             *m_value = value;
         }
 
-    private:
-        StateGroup(size_t id, const T& value) : IStateGroup(id), m_value(std::make_shared<T>(value)) {}
-
         void fireOnChangeOfAllStates(const T& current, const T& previous) const {
             for (const auto& state : m_states) {
                 static_cast<State<T>&>(*state.get()).fireOnChange(current, previous);
             }
         }
+
+    private:
+        StateGroup(size_t id, const T& value) : IStateGroup(id), m_value(std::make_shared<T>(value)) {}
     };
 }

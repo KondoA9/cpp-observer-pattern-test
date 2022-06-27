@@ -25,7 +25,7 @@ public:
         return getGroup().value();
     }
 
-    void bind(const State& state) {
+    void bind(const State<T>& state) {
         // Bind if not in the same group
         if (_stateGroupId() != state._stateGroupId()) {
             auto& group = state.getGroup();
@@ -43,11 +43,7 @@ public:
         group.setValue(newValue);
     }
 
-    operator const T&() const& {
-        return value();
-    }
-
-    operator const T&&() const&& {
+    operator const T&() const {
         return value();
     }
 

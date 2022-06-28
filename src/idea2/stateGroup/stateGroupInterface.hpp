@@ -24,10 +24,12 @@ namespace Internal {
 
         virtual ~IStateGroup() = default;
 
+        void addState(size_t id);
+
+        void removeState(size_t id);
+
         size_t stateGroupId() const {
             return m_id;
         }
-
-        void addState(size_t id);
     };
 }

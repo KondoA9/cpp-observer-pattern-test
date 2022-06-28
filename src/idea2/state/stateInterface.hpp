@@ -30,7 +30,7 @@ namespace Internal {
         }
 
     protected:
-        IState(size_t id, size_t groupId);
+        IState(size_t id, size_t groupId) : m_id(id), m_groupId(groupId) {}
 
         IStateGroup& getGroupInterface() const;
 

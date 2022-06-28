@@ -23,24 +23,25 @@ private:
     friend class Internal::StateGroup<T>;
     friend class StateFactory;
 
-    T& m_value;
+    std::shared_ptr<T> m_value;
 
 private:
     OnChangeFuncType m_onChange;
 
 public:
     const T& value() const {
-        return m_value;
+        return *m_value;
     }
 
     void bind(const State<T>& state) {
         // Bind if not in the same group
         if (_stateGroupId() != state._stateGroupId()) {
-            const auto prevValue = value();
-            auto& group          = state.getGroup();
-            group.addState(_stateId());
+            const auto previousValue = value();
+
+            Internal::StateGroup<T>::Move(*this, state.getGroup());
+
             updateValue();
-            fireOnChange(value(), prevValue);
+            fireOnChange(value(), previousValue);
         }
     }
 
@@ -66,7 +67,7 @@ public:
     void setValue(const Setter& setter) {
         const auto prevValue = value();
         auto& group          = getGroup();
-        setter(group.valueRef());
+        setter(*group.valuePtr());
         group.updateValues();
         group.fireOnChangeOfAllStates(value(), prevValue);
     }
@@ -165,7 +166,7 @@ public:
     }
 
 private:
-    State(size_t id, size_t groupId) : IState(id, groupId), m_value(getGroup().valueRef()) {}
+    State(size_t id, size_t groupId) : IState(id, groupId), m_value(getGroup().valuePtr()) {}
 
     Internal::StateGroup<T>& getGroup() const {
         return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
@@ -178,7 +179,7 @@ private:
     }
 
     void updateValue() {
-        m_value = getGroup().valueRef();
+        m_value = getGroup().valuePtr();
     }
 
     void setOnChangeImpl(const OnChangeFuncType& func, bool inherit) {

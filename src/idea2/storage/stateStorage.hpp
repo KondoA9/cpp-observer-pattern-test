@@ -22,4 +22,6 @@ public:
     static StatePtr Get(size_t id);
 
     static void Store(const StatePtr& state);
+
+    static void Release(size_t id);
 };

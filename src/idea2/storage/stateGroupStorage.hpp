@@ -22,4 +22,6 @@ public:
     static StateGroupPtr Get(size_t id);
 
     static void Store(const StateGroupPtr& group);
+
+    static void Release(size_t id);
 };

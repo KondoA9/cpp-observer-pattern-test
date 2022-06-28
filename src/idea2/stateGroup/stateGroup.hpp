@@ -17,12 +17,22 @@ namespace Internal {
         std::shared_ptr<T> m_value = nullptr;
 
     public:
-        T& valueRef() const {
-            return *m_value.get();
+        const std::shared_ptr<T>& valuePtr() const {
+            return m_value;
         }
 
         const T& value() const {
             return *m_value.get();
+        }
+
+        static void Move(const State<T>& state, StateGroup<T>& to) {
+            const auto stateId = state._stateId();
+
+            // Remove from current group
+            state.getGroupInterface().removeState(stateId);
+
+            // Add to new group
+            to.addState(stateId);
         }
 
         void setValue(const T& value) {

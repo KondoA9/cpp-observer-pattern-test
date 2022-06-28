@@ -13,7 +13,11 @@ public:
 
     StateWrap(const StateWrap&) = delete;
 
+    StateWrap(StateWrap&&) = default;
+
     StateWrap& operator=(const StateWrap&) = delete;
+
+    StateWrap& operator=(StateWrap&&) = default;
 
     explicit StateWrap(const T& value = T()) : m_state(StateFactory::Create<T>(value)) {}
 

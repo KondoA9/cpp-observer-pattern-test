@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "../stateGroup/stateGroupInterface.hpp"
+
 namespace Internal {
     class IStateGroup;
 
@@ -10,7 +12,8 @@ namespace Internal {
 
     private:
         const size_t m_id;
-        size_t m_groupId;
+
+        std::shared_ptr<IStateGroup> m_group;
 
     public:
         IState() = delete;
@@ -28,17 +31,19 @@ namespace Internal {
         }
 
         size_t _stateGroupId() const {
-            return m_groupId;
+            return m_group->stateGroupId();
         }
 
     protected:
-        IState(size_t id, size_t groupId) : m_id(id), m_groupId(groupId) {}
+        IState(size_t id, size_t groupId) : m_id(id) {
+            setGroup(groupId);
+        }
 
-        IStateGroup& getGroupInterface() const;
+        IStateGroup& getGroupInterface() const {
+            return *m_group;
+        }
 
     private:
-        void setGroupId(size_t id) {
-            m_groupId = id;
-        }
+        void setGroup(size_t id);
     };
 }

@@ -1,6 +1,5 @@
 #include "stateInterface.hpp"
 
-#include "stateGroup/stateGroupInterface.hpp"
 #include "storage/stateGroupStorage.hpp"
 #include "storage/stateStorage.hpp"
 
@@ -9,7 +8,7 @@ namespace Internal {
         StateStorage::Release(m_id);
     }
 
-    IStateGroup& IState::getGroupInterface() const {
-        return *StateGroupStorage::Get(_stateGroupId()).get();
+    void IState::setGroup(size_t id) {
+        m_group = StateGroupStorage::Get(id);
     }
 }

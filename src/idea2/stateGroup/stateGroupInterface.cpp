@@ -7,7 +7,7 @@
 namespace Internal {
     void IStateGroup::addState(size_t id) {
         const auto state = StateStorage::Get(id);
-        state->setGroupId(m_id);
+        state->setGroup(m_id);
         m_states.emplace_back(state);
     }
 

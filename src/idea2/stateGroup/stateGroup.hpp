@@ -19,7 +19,7 @@ namespace Internal {
         }
 
         const T& value() const {
-            return *m_value.get();
+            return *m_value;
         }
 
         static void Move(const StateImpl<T>& state, StateGroup<T>& to) {
@@ -38,13 +38,13 @@ namespace Internal {
 
         void fireOnChangeOfAllStates(const T& current, const T& previous) const {
             for (const auto& state : m_states) {
-                static_cast<StateImpl<T>&>(*state.get()).fireOnChange(current, previous);
+                static_cast<StateImpl<T>&>(*state).fireOnChange(current, previous);
             }
         }
 
         void updateValues() {
             for (const auto& state : m_states) {
-                static_cast<StateImpl<T>&>(*state.get()).updateValue();
+                static_cast<StateImpl<T>&>(*state).updateValue();
             }
         }
 

@@ -7,7 +7,7 @@
 class InputField {
 private:
     // --------------------------------------------
-    // States must be private
+    // States should be private or protected
     // --------------------------------------------
 
     State<bool>& m_isEnabled   = StateFactory::Create<bool>(true);
@@ -84,7 +84,7 @@ public:
 class Model {
 private:
     // --------------------------------------------
-    // States must be private
+    // States should be private or protected
     // --------------------------------------------
 
     State<std::string>& m_text      = StateFactory::Create<std::string>("");

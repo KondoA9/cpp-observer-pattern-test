@@ -12,6 +12,10 @@ namespace Internal {
 
 template <typename T>
 class State final : public Internal::IState {
+public:
+    using Setter = std::function<void(T& value)>;
+
+private:
     using OnChangeFuncType  = std::function<void(const T& current, const T& previous)>;
     using OnChangeFuncType2 = std::function<void(const T& current)>;
     using OnChangeFuncType3 = std::function<void()>;
@@ -55,7 +59,7 @@ public:
         group.setValue(newValue);
     }
 
-    void setValue(const std::function<void(T& value)>& setter) {
+    void setValue(const Setter& setter) {
         const auto prevValue = value();
         auto& group          = getGroup();
         setter(group.valueRef());

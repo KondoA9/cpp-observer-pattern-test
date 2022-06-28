@@ -5,10 +5,10 @@
 #include "../state/stateImpl.hpp"
 #include "stateGroupInterface.hpp"
 
-template <typename T>
-class StateImpl;
-
 namespace Internal {
+    template <typename T>
+    class StateImpl;
+
     template <typename T>
     class StateGroup final : public IStateGroup {
         friend class StateGroupFactory;

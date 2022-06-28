@@ -3,10 +3,10 @@
 #include <iostream>
 #include <string>
 
-#include "statewrap/statewrap.hpp"
+#include "state/state.hpp"
 
 template <typename T>
-void Validate(const StateWrap<T>& state, const StateWrap<T>& target1, const StateWrap<T>& target2, const T& value) {
+void Validate(const State<T>& state, const State<T>& target1, const State<T>& target2, const T& value) {
     const bool isEqualToValue = state == value;
     const bool isSame         = state == target1 && state == target2;
 
@@ -17,9 +17,9 @@ void Validate(const StateWrap<T>& state, const StateWrap<T>& target1, const Stat
 int main() {
     // State<int>
     {
-        auto state   = StateWrap<int>(1);
-        auto target1 = StateWrap<int>(2);
-        auto target2 = StateWrap<int>(3);
+        auto state   = State<int>(1);
+        auto target1 = State<int>(2);
+        auto target2 = State<int>(3);
 
         // Value is the same when bind
         target1.bind(state);
@@ -53,9 +53,9 @@ int main() {
 
     // std::string
     {
-        auto state   = StateWrap<std::string>("");
-        auto target1 = StateWrap<std::string>("");
-        auto target2 = StateWrap<std::string>("");
+        auto state   = State<std::string>("");
+        auto target1 = State<std::string>("");
+        auto target2 = State<std::string>("");
 
         // Value is the same when bind
         target1.bind(state);

@@ -1,11 +1,11 @@
 #include <assert.h>
 
-#include "statewrap/statewrap.hpp"
+#include "state/state.hpp"
 
 int main() {
-    auto state   = StateWrap<int>(0);
-    auto target1 = StateWrap<int>(0);
-    auto target2 = StateWrap<int>(0);
+    auto state   = State<int>(0);
+    auto target1 = State<int>(0);
+    auto target2 = State<int>(0);
 
     target1.bind(state);
     target2.bind(state);

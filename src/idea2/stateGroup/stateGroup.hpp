@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include "../state/state.hpp"
+#include "../state/stateImpl.hpp"
 #include "stateGroupInterface.hpp"
 
 template <typename T>
-class State;
+class StateImpl;
 
 namespace Internal {
     template <typename T>
@@ -25,7 +25,7 @@ namespace Internal {
             return *m_value.get();
         }
 
-        static void Move(const State<T>& state, StateGroup<T>& to) {
+        static void Move(const StateImpl<T>& state, StateGroup<T>& to) {
             const auto stateId = state._stateId();
 
             // Remove from current group
@@ -41,13 +41,13 @@ namespace Internal {
 
         void fireOnChangeOfAllStates(const T& current, const T& previous) const {
             for (const auto& state : m_states) {
-                static_cast<State<T>&>(*state.get()).fireOnChange(current, previous);
+                static_cast<StateImpl<T>&>(*state.get()).fireOnChange(current, previous);
             }
         }
 
         void updateValues() {
             for (const auto& state : m_states) {
-                static_cast<State<T>&>(*state.get()).updateValue();
+                static_cast<StateImpl<T>&>(*state.get()).updateValue();
             }
         }
 

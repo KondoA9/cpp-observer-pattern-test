@@ -1,104 +1,148 @@
 #pragma once
 
-#include <functional>
-
-#include "../stateGroup/stateGroup.hpp"
-#include "stateInterface.hpp"
-
-namespace Internal {
-    template <typename T>
-    class StateGroup;
-}
+#include "../factory/stateFactory.hpp"
+#include "stateImpl.hpp"
 
 template <typename T>
-class State final : public Internal::IState {
-public:
-    using Setter = std::function<void(T& value)>;
-
+class State final {
 private:
-    using OnChangeFuncType  = std::function<void(const T& current, const T& previous)>;
-    using OnChangeFuncType2 = std::function<void(const T& current)>;
-    using OnChangeFuncType3 = std::function<void()>;
-
-    friend class Internal::StateGroup<T>;
-    friend class StateFactory;
-
-    std::shared_ptr<T> m_value;
-
-private:
-    OnChangeFuncType m_onChange;
+    StateImpl<T>& m_state;
 
 public:
+    State() = delete;
+
+    State(const State&) = delete;
+
+    State(State&&) = default;
+
+    State& operator=(const State&) = delete;
+
+    State& operator=(State&&) = default;
+
+    explicit State(const T& value = T()) : m_state(StateFactory::Create<T>(value)) {}
+
+    ~State() {
+        m_state._destroy();
+    }
+
     const T& value() const {
-        return *m_value;
+        return m_state.value();
     }
 
     void bind(const State<T>& state) {
-        // Bind if not in the same group
-        if (_stateGroupId() != state._stateGroupId()) {
-            const auto previousValue = value();
-
-            Internal::StateGroup<T>::Move(*this, state.getGroup());
-
-            updateValue();
-            fireOnChange(value(), previousValue);
-        }
+        m_state.bind(state.m_state);
     }
 
-    void setOnChange(const OnChangeFuncType& func, bool inherit) {
-        setOnChangeImpl(func, inherit);
+    void setOnChange(const std::function<void(const T& current, const T& previous)>& func, bool inherit = false) {
+        m_state.setOnChange(func, inherit);
     }
 
-    void setOnChange(const OnChangeFuncType2& func, bool inherit) {
-        setOnChangeImpl(std::bind(func, std::placeholders::_1), inherit);
+    void setOnChange(const std::function<void(const T& current)>& func, bool inherit = false) {
+        m_state.setOnChange(func, inherit);
     }
 
-    void setOnChange(const OnChangeFuncType3& func, bool inherit) {
-        setOnChangeImpl(std::bind(func), inherit);
+    void setOnChange(const std::function<void()>& func, bool inherit = false) {
+        m_state.setOnChange(func, inherit);
     }
 
     void setValue(const T& newValue) {
-        auto& group = getGroup();
-        group.fireOnChangeOfAllStates(newValue, value());
-        group.setValue(newValue);
-        group.updateValues();
+        m_state.setValue(newValue);
     }
 
-    void setValue(const Setter& setter) {
-        const auto prevValue = value();
-        auto& group          = getGroup();
-        setter(*group.valuePtr());
-        group.updateValues();
-        group.fireOnChangeOfAllStates(value(), prevValue);
+    void setValue(const std::function<void(T& value)>& setter) {
+        m_state.setValue(setter);
     }
 
-private:
-    State(size_t id, size_t groupId) : IState(id, groupId), m_value(getGroup().valuePtr()) {}
+    // ---------------------------------------------------
+    // Conversion operator
+    // ---------------------------------------------------
 
-    Internal::StateGroup<T>& getGroup() const {
-        return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
+    explicit operator const T&() const {
+        return m_state.value();
     }
 
-    void fireOnChange(const T& current, const T& previous) const {
-        if (m_onChange) {
-            m_onChange(current, previous);
-        }
+    // ---------------------------------------------------
+    // Assignment operator
+    // ---------------------------------------------------
+
+    State<T>& operator=(const T& _value) {
+        m_state.setValue(_value);
+        return *this;
     }
 
-    void updateValue() {
-        m_value = getGroup().valuePtr();
+    // ---------------------------------------------------
+    // Comparison operators
+    // ---------------------------------------------------
+
+    bool operator==(const State<T>& other) const {
+        return m_state.value() == other.value();
     }
 
-    void setOnChangeImpl(const OnChangeFuncType& func, bool inherit) {
-        if (inherit && m_onChange) {
-            const auto prevOnChange = m_onChange;
+    bool operator!=(const State<T>& other) const {
+        return m_state.value() != other.value();
+    }
 
-            m_onChange = [prevOnChange, func](const T& current, const T& previous) {
-                prevOnChange(current, previous);
-                func(current, previous);
-            };
-        } else {
-            m_onChange = func;
-        }
+    bool operator<(const State<T>& other) const {
+        return m_state.value() < other.value();
+    }
+
+    bool operator<=(const State<T>& other) const {
+        return m_state.value() <= other.value();
+    }
+
+    bool operator>(const State<T>& other) const {
+        return m_state.value() > other.value();
+    }
+
+    bool operator>=(const State<T>& other) const {
+        return m_state.value() >= other.value();
+    }
+
+    bool operator==(const T& _value) const {
+        return m_state.value() == _value;
+    }
+
+    bool operator!=(const T& _value) const {
+        return m_state.value() != _value;
+    }
+
+    bool operator<(const T& _value) const {
+        return m_state.value() < _value;
+    }
+
+    bool operator<=(const T& _value) const {
+        return m_state.value() <= _value;
+    }
+
+    bool operator>(const T& _value) const {
+        return m_state.value() > _value;
+    }
+
+    bool operator>=(const T& _value) const {
+        return m_state.value() >= _value;
+    }
+
+    friend bool operator==(const T& value, const State<T>& state) {
+        return value == state.value();
+    }
+
+    friend bool operator!=(const T& value, const State<T>& state) {
+        return value != state.value();
+    }
+
+    friend bool operator<(const T& value, const State<T>& state) {
+        return value < state.value();
+    }
+
+    friend bool operator<=(const T& value, const State<T>& state) {
+        return value <= state.value();
+    }
+
+    friend bool operator>(const T& value, const State<T>& state) {
+        return value > state.value();
+    }
+
+    friend bool operator>=(const T& value, const State<T>& state) {
+        return value >= state.value();
     }
 };

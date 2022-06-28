@@ -1,10 +1,10 @@
 #include <assert.h>
 
-#include "statewrap/statewrap.hpp"
+#include "state/state.hpp"
 
 int main() {
-    auto value1 = StateWrap<int>(1);
-    auto value2 = StateWrap<int>(2);
+    auto value1 = State<int>(1);
+    auto value2 = State<int>(2);
 
     assert(value1 == value1);
     assert(value1 == value1.value());

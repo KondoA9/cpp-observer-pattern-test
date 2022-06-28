@@ -23,12 +23,14 @@ private:
     friend class Internal::StateGroup<T>;
     friend class StateFactory;
 
+    T& m_value;
+
 private:
     OnChangeFuncType m_onChange;
 
 public:
     const T& value() const {
-        return getGroup().value();
+        return m_value;
     }
 
     void bind(const State<T>& state) {
@@ -37,6 +39,7 @@ public:
             const auto prevValue = value();
             auto& group          = state.getGroup();
             group.addState(_stateId());
+            updateValue();
             fireOnChange(value(), prevValue);
         }
     }
@@ -57,12 +60,14 @@ public:
         auto& group = getGroup();
         group.fireOnChangeOfAllStates(newValue, value());
         group.setValue(newValue);
+        group.updateValues();
     }
 
     void setValue(const Setter& setter) {
         const auto prevValue = value();
         auto& group          = getGroup();
         setter(group.valueRef());
+        group.updateValues();
         group.fireOnChangeOfAllStates(value(), prevValue);
     }
 
@@ -160,7 +165,7 @@ public:
     }
 
 private:
-    using Internal::IState::IState;
+    State(size_t id, size_t groupId) : IState(id, groupId), m_value(getGroup().valueRef()) {}
 
     Internal::StateGroup<T>& getGroup() const {
         return static_cast<Internal::StateGroup<T>&>(getGroupInterface());
@@ -170,6 +175,10 @@ private:
         if (m_onChange) {
             m_onChange(current, previous);
         }
+    }
+
+    void updateValue() {
+        m_value = getGroup().valueRef();
     }
 
     void setOnChangeImpl(const OnChangeFuncType& func, bool inherit) {

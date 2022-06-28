@@ -45,15 +45,15 @@ public:
         }
     }
 
-    void setOnChange(const OnChangeFuncType& func, bool inherit = false) {
+    void setOnChange(const OnChangeFuncType& func, bool inherit) {
         setOnChangeImpl(func, inherit);
     }
 
-    void setOnChange(const OnChangeFuncType2& func, bool inherit = false) {
+    void setOnChange(const OnChangeFuncType2& func, bool inherit) {
         setOnChangeImpl(std::bind(func, std::placeholders::_1), inherit);
     }
 
-    void setOnChange(const OnChangeFuncType3& func, bool inherit = false) {
+    void setOnChange(const OnChangeFuncType3& func, bool inherit) {
         setOnChangeImpl(std::bind(func), inherit);
     }
 

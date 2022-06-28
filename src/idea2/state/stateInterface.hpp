@@ -41,5 +41,4 @@ namespace Internal {
             m_groupId = id;
         }
     };
-
 }

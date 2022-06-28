@@ -6,7 +6,7 @@
 template <typename T>
 class State final {
 private:
-    StateImpl<T>& m_state;
+    Internal::StateImpl<T>& m_state;
 
 public:
     State() = delete;
@@ -19,7 +19,7 @@ public:
 
     State& operator=(State&&) = default;
 
-    explicit State(const T& value = T()) : m_state(StateFactory::Create<T>(value)) {}
+    explicit State(const T& value = T()) : m_state(Internal::StateFactory::Create<T>(value)) {}
 
     ~State() {
         m_state._destroy();

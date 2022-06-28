@@ -24,5 +24,4 @@ namespace Internal {
 
         static void StoreGroup(const std::shared_ptr<IStateGroup>& group);
     };
-
 }

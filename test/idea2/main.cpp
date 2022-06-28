@@ -1,5 +1,7 @@
 #include <assert.h>
 
+#include <chrono>
+#include <iostream>
 #include <string>
 
 #include "state/state.hpp"
@@ -157,6 +159,20 @@ int main() {
     Page page;
 
     page.run();
+
+    // Profiling
+    {
+        const auto start = std::chrono::system_clock::now();
+
+        constexpr size_t N = 10000;
+        for (size_t i = 0; i < N; i++) {
+            auto _ = State<std::string>("");
+        }
+
+        const auto end     = std::chrono::system_clock::now();
+        const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+        std::cout << "Created " << N << " states: " << elapsed << "ms" << std::endl;
+    }
 
     return 0;
 }

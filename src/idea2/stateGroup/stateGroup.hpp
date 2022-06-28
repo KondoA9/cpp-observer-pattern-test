@@ -25,7 +25,7 @@ namespace Internal {
             return *m_value.get();
         }
 
-        void setValue(const T& value) const {
+        void setValue(const T& value) {
             *m_value = value;
         }
 

@@ -49,13 +49,13 @@ public:
         setOnChangeImpl(std::bind(func), inherit);
     }
 
-    void setValue(const T& newValue) const {
+    void setValue(const T& newValue) {
         auto& group = getGroup();
         group.fireOnChangeOfAllStates(newValue, value());
         group.setValue(newValue);
     }
 
-    void setValue(const std::function<void(T& value)>& setter) const {
+    void setValue(const std::function<void(T& value)>& setter) {
         const auto prevValue = value();
         auto& group          = getGroup();
         setter(group.valueRef());

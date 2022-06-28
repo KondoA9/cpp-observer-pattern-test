@@ -121,26 +121,35 @@ private:
 
 public:
     void run() {
-        // Enable / Disable input field by the toggle button
-        ui_inputField.bindEnabled(ui_toggleButton.isToggled());
+        // Binding
+        {
+            // Enable / Disable input field by the toggle button
+            ui_inputField.bindEnabled(ui_toggleButton.isToggled());
 
-        // Input Model::text by the input field
-        ui_inputField.bindText(m_model.getText());
+            // Input Model::text by the input field
+            ui_inputField.bindText(m_model.getText());
 
-        ui_twiceText.bindText(m_model.getTextTwice());
+            ui_twiceText.bindText(m_model.getTextTwice());
+        }
 
         assert(m_model.getText() == "" && ui_inputField.getText() == "");
 
         // Disable input field
-        ui_toggleButton.toggle();
-        ui_inputField.input("dummy");
-        assert(m_model.getText() == "" && ui_inputField.getText() == "");
+        {
+            ui_toggleButton.toggle();
 
-        // Input
-        ui_toggleButton.toggle();
-        ui_inputField.input("hello");
-        assert(m_model.getText() == "hello" && ui_inputField.getText() == "hello");
-        assert(m_model.getTextTwice() == "hellohello" && ui_twiceText.getText() == "hellohello");
+            ui_inputField.input("dummy");
+            assert(m_model.getText() == "" && ui_inputField.getText() == "");
+        }
+
+        // Input text
+        {
+            ui_toggleButton.toggle();
+
+            ui_inputField.input("hello");
+            assert(m_model.getText() == "hello" && ui_inputField.getText() == "hello");
+            assert(m_model.getTextTwice() == "hellohello" && ui_twiceText.getText() == "hellohello");
+        }
     }
 };
 

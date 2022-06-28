@@ -1,11 +1,11 @@
 #include <assert.h>
 
-#include "factory/stateFactory.hpp"
+#include "statewrap/statewrap.hpp"
 
 int main() {
-    State<int>& state   = StateFactory::Create<int>(0);
-    State<int>& target1 = StateFactory::Create<int>(0);
-    State<int>& target2 = StateFactory::Create<int>(0);
+    auto state   = StateWrap<int>(0);
+    auto target1 = StateWrap<int>(0);
+    auto target2 = StateWrap<int>(0);
 
     target1.bind(state);
     target2.bind(state);

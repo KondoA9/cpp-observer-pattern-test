@@ -1,11 +1,12 @@
 #include <assert.h>
 
+#include <iostream>
 #include <string>
 
-#include "factory/stateFactory.hpp"
+#include "statewrap/statewrap.hpp"
 
 template <typename T>
-void Validate(const State<T>& state, const State<T>& target1, const State<T>& target2, const T& value) {
+void Validate(const StateWrap<T>& state, const StateWrap<T>& target1, const StateWrap<T>& target2, const T& value) {
     const bool isEqualToValue = state == value;
     const bool isSame         = state == target1 && state == target2;
 
@@ -16,9 +17,9 @@ void Validate(const State<T>& state, const State<T>& target1, const State<T>& ta
 int main() {
     // State<int>
     {
-        State<int>& state   = StateFactory::Create<int>(1);
-        State<int>& target1 = StateFactory::Create<int>(2);
-        State<int>& target2 = StateFactory::Create<int>(3);
+        auto state   = StateWrap<int>(1);
+        auto target1 = StateWrap<int>(2);
+        auto target2 = StateWrap<int>(3);
 
         // Value is the same when bind
         target1.bind(state);
@@ -52,9 +53,9 @@ int main() {
 
     // std::string
     {
-        State<std::string>& state   = StateFactory::Create<std::string>("");
-        State<std::string>& target1 = StateFactory::Create<std::string>("");
-        State<std::string>& target2 = StateFactory::Create<std::string>("");
+        auto state   = StateWrap<std::string>("");
+        auto target1 = StateWrap<std::string>("");
+        auto target2 = StateWrap<std::string>("");
 
         // Value is the same when bind
         target1.bind(state);

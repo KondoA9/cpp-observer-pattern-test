@@ -1,8 +1,6 @@
 #include <assert.h>
 
-#include <iostream>
-
-#include "factory/stateFactory.hpp"
+#include "statewrap/statewrap.hpp"
 
 class InputField {
 private:
@@ -10,19 +8,19 @@ private:
     // States should be private or protected
     // --------------------------------------------
 
-    State<bool>& m_isEnabled   = StateFactory::Create<bool>(true);
-    State<std::string>& m_text = StateFactory::Create<std::string>("");
+    StateWrap<bool> m_isEnabled   = StateWrap<bool>(true);
+    StateWrap<std::string> m_text = StateWrap<std::string>("");
 
 public:
     // --------------------------------------------
     // UI should have methods to bind states
     // --------------------------------------------
 
-    void bindText(const State<std::string>& state) {
+    void bindText(const StateWrap<std::string>& state) {
         m_text.bind(state);
     }
 
-    void bindEnabled(const State<bool>& state) {
+    void bindEnabled(const StateWrap<bool>& state) {
         m_isEnabled.bind(state);
     }
 
@@ -30,11 +28,11 @@ public:
     // UI should have methods to get states
     // --------------------------------------------
 
-    const State<std::string>& getText() const {
+    const StateWrap<std::string>& getText() const {
         return m_text;
     }
 
-    const State<bool>& isEnabled() const {
+    const StateWrap<bool>& isEnabled() const {
         return m_isEnabled;
     }
 
@@ -51,28 +49,28 @@ public:
 
 class Text {
 private:
-    State<std::string>& m_text = StateFactory::Create<std::string>("");
+    StateWrap<std::string> m_text = StateWrap<std::string>("");
 
 public:
-    void bindText(const State<std::string>& state) {
+    void bindText(const StateWrap<std::string>& state) {
         m_text.bind(state);
     }
 
-    const State<std::string>& getText() const {
+    const StateWrap<std::string>& getText() const {
         return m_text;
     }
 };
 
 class ToggleButton {
 private:
-    State<bool>& m_isToggled = StateFactory::Create<bool>(true);
+    StateWrap<bool>& m_isToggled = StateWrap<bool>(true);
 
 public:
-    void bindToggled(const State<bool>& state) {
+    void bindToggled(const StateWrap<bool>& state) {
         m_isToggled.bind(state);
     }
 
-    const State<bool>& isToggled() const {
+    const StateWrap<bool>& isToggled() const {
         return m_isToggled;
     }
 
@@ -87,8 +85,8 @@ private:
     // States should be private or protected
     // --------------------------------------------
 
-    State<std::string>& m_text      = StateFactory::Create<std::string>("");
-    State<std::string>& m_textTwice = StateFactory::Create<std::string>("");
+    StateWrap<std::string> m_text      = StateWrap<std::string>("");
+    StateWrap<std::string> m_textTwice = StateWrap<std::string>("");
 
 public:
     Model() {
@@ -100,11 +98,11 @@ public:
     // Model should have methods to get states
     // --------------------------------------------
 
-    const State<std::string>& getText() const {
+    const StateWrap<std::string>& getText() const {
         return m_text;
     }
 
-    const State<std::string>& getTextTwice() const {
+    const StateWrap<std::string>& getTextTwice() const {
         return m_textTwice;
     }
 };

@@ -21,6 +21,8 @@ namespace Internal {
 
         virtual ~IState() = default;
 
+        void _destroy() const;
+
         size_t _stateId() const {
             return m_id;
         }

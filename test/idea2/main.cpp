@@ -63,7 +63,7 @@ public:
 
 class ToggleButton {
 private:
-    StateWrap<bool>& m_isToggled = StateWrap<bool>(true);
+    StateWrap<bool> m_isToggled = StateWrap<bool>(true);
 
 public:
     void bindToggled(const StateWrap<bool>& state) {

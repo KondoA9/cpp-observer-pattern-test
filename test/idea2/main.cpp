@@ -4,120 +4,150 @@
 
 #include "factory/stateFactory.hpp"
 
-class View {
+class InputField {
 private:
-    State<bool>& m_toggleButtonState = StateFactory::Create<bool>(true);
-    State<std::string>& m_inputText  = StateFactory::Create<std::string>("placeholder");
+    // --------------------------------------------
+    // States must be private
+    // --------------------------------------------
+
+    State<bool>& m_isEnabled   = StateFactory::Create<bool>(true);
+    State<std::string>& m_text = StateFactory::Create<std::string>("");
 
 public:
-    View() {
-        m_toggleButtonState.setOnChange(
-            [](auto current, auto) { std::cout << "View: toggle is " << (current ? "true" : "false") << std::endl; });
+    // --------------------------------------------
+    // UI should have methods to bind states
+    // --------------------------------------------
+
+    void bindText(const State<std::string>& state) {
+        m_text.bind(state);
     }
 
-    bool getToggleState() const {
-        return m_toggleButtonState.value();
+    void bindEnabled(const State<bool>& state) {
+        m_isEnabled.bind(state);
     }
 
-    std::string getInputText() const {
-        return m_inputText.value();
+    // --------------------------------------------
+    // UI should have methods to get states
+    // --------------------------------------------
+
+    const State<std::string>& getText() const {
+        return m_text;
     }
 
-    void bindToggleState(const State<bool>& state) {
-        m_toggleButtonState.bind(state);
+    const State<bool>& isEnabled() const {
+        return m_isEnabled;
     }
 
-    void bintInputField(const State<std::string>& state) {
-        m_inputText.bind(state);
+    // --------------------------------------------
+    // Other methods
+    // --------------------------------------------
+
+    void input(const std::string& str) {
+        if (m_isEnabled) {
+            m_text = m_text.value() + str;
+        }
+    }
+};
+
+class Text {
+private:
+    State<std::string>& m_text = StateFactory::Create<std::string>("");
+
+public:
+    void bindText(const State<std::string>& state) {
+        m_text.bind(state);
+    }
+
+    const State<std::string>& getText() const {
+        return m_text;
+    }
+};
+
+class ToggleButton {
+private:
+    State<bool>& m_isToggled = StateFactory::Create<bool>(true);
+
+public:
+    void bindToggled(const State<bool>& state) {
+        m_isToggled.bind(state);
+    }
+
+    const State<bool>& isToggled() const {
+        return m_isToggled;
     }
 
     void toggle() {
-        m_toggleButtonState.setValue(!m_toggleButtonState.value());
-    }
-
-    void input(const std::string& str) {
-        m_inputText.setValue(m_inputText.value() + str);
+        m_isToggled = !m_isToggled;
     }
 };
 
 class Model {
 private:
-    State<bool>& m_Enabled     = StateFactory::Create<bool>(false);
-    State<std::string>& m_text = StateFactory::Create<std::string>("");
-    State<int>& m_intValue     = StateFactory::Create<int>(0);
+    // --------------------------------------------
+    // States must be private
+    // --------------------------------------------
+
+    State<std::string>& m_text      = StateFactory::Create<std::string>("");
+    State<std::string>& m_textTwice = StateFactory::Create<std::string>("");
 
 public:
     Model() {
-        m_Enabled.setOnChange([](auto current, auto) {
-            std::cout << "Model: m_enabled is " << (current ? "enabled" : "disabled") << std::endl;
-        });
-        m_text.setOnChange([](auto current, auto) { std::cout << "Model: text is " << current << std::endl; });
+        // m_textTwice depends on m_text
+        m_text.setOnChange([this](const std::string& current) { m_textTwice = current + current; });
     }
 
-    const State<bool>& stateEnabled() const {
-        return m_Enabled;
-    }
+    // --------------------------------------------
+    // Model should have methods to get states
+    // --------------------------------------------
 
-    const State<std::string>& stateText() const {
+    const State<std::string>& getText() const {
         return m_text;
     }
 
-    const State<int>& stateIntValue() const {
-        return m_intValue;
+    const State<std::string>& getTextTwice() const {
+        return m_textTwice;
     }
 };
 
-class ViewController {
+class Page {
 private:
-    View m_view;
-    Model m_model;
+    // UI
+    ToggleButton ui_toggleButton;
+    InputField ui_inputField;
+    Text ui_twiceText;
 
-    State<int>& m_intValue       = StateFactory::Create<int>(1);
-    State<int>& m_intValue2      = StateFactory::Create<int>(100);
-    State<std::string>& m_string = StateFactory::Create<std::string>("");
+    // Logic
+    Model m_model;
 
 public:
     void run() {
-        m_view.bindToggleState(m_model.stateEnabled());
-        m_view.bintInputField(m_model.stateText());
-        assert(m_model.stateEnabled() == false && m_view.getToggleState() == m_model.stateEnabled());
+        // Enable / Disable input field by the toggle button
+        ui_inputField.bindEnabled(ui_toggleButton.isToggled());
 
-        m_view.toggle();
-        assert(m_model.stateEnabled() == true && m_view.getToggleState() == m_model.stateEnabled());
+        // Input Model::text by the input field
+        ui_inputField.bindText(m_model.getText());
 
-        m_view.toggle();
-        assert(m_model.stateEnabled() == false && m_view.getToggleState() == m_model.stateEnabled());
+        ui_twiceText.bindText(m_model.getTextTwice());
 
-        m_view.input("a");
-        assert(m_model.stateText() == "a" && m_view.getInputText() == m_model.stateText());
+        assert(m_model.getText() == "" && ui_inputField.getText() == "");
 
-        m_view.input("bcd");
-        assert(m_model.stateText() == "abcd" && m_view.getInputText() == m_model.stateText());
+        // Disable input field
+        ui_toggleButton.toggle();
+        ui_inputField.input("dummy");
+        assert(m_model.getText() == "" && ui_inputField.getText() == "");
 
-        assert(m_intValue != m_model.stateIntValue());
-        assert(m_intValue > m_model.stateIntValue());
-        assert(m_intValue > m_model.stateIntValue().value());
-        assert(m_intValue.value() > m_model.stateIntValue());
-
-        assert(m_model.stateIntValue() != m_intValue);
-        assert(m_model.stateIntValue() < m_intValue);
-
-        m_intValue.bind(m_model.stateIntValue());
-        assert(m_intValue == m_model.stateIntValue());
-
-        m_intValue.setValue([](int& state) { state = 3; });
-        assert(m_intValue == 3 && m_intValue == m_model.stateIntValue());
-
-        m_intValue = 2;
-        m_intValue = m_intValue.value() + 2;
-        assert(m_intValue == 4 && m_intValue == m_model.stateIntValue());
+        // Input
+        ui_toggleButton.toggle();
+        ui_inputField.input("hello");
+        assert(m_model.getText() == "hello" && ui_inputField.getText() == "hello");
+        assert(m_model.getTextTwice() == "hellohello" && ui_twiceText.getText() == "hellohello");
     }
 };
 
 int main() {
-    ViewController vc;
+    Page page;
 
-    vc.run();
+    page.run();
 
     return 0;
 }

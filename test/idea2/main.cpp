@@ -1,5 +1,7 @@
 #include <assert.h>
 
+#include <string>
+
 #include "statewrap/statewrap.hpp"
 
 class InputField {

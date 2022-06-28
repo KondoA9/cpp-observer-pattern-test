@@ -15,7 +15,7 @@ public:
 
     StateWrap& operator=(const StateWrap&) = delete;
 
-    StateWrap(const T& value = T()) : m_state(StateFactory::Create<T>(value)) {}
+    explicit StateWrap(const T& value = T()) : m_state(StateFactory::Create<T>(value)) {}
 
     ~StateWrap() {
         m_state._destroy();

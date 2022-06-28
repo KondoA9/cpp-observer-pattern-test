@@ -72,7 +72,9 @@ private:
     View m_view;
     Model m_model;
 
-    State<int>& m_intValue = StateFactory::Create<int>(1);
+    State<int>& m_intValue       = StateFactory::Create<int>(1);
+    State<int>& m_intValue2      = StateFactory::Create<int>(100);
+    State<std::string>& m_string = StateFactory::Create<std::string>("");
 
 public:
     void run() {
@@ -94,6 +96,8 @@ public:
 
         assert(m_intValue != m_model.stateIntValue());
         assert(m_intValue > m_model.stateIntValue());
+        assert(m_intValue > m_model.stateIntValue().value());
+        assert(m_intValue.value() > m_model.stateIntValue());
 
         assert(m_model.stateIntValue() != m_intValue);
         assert(m_model.stateIntValue() < m_intValue);
@@ -101,11 +105,12 @@ public:
         m_intValue.bind(m_model.stateIntValue());
         assert(m_intValue == m_model.stateIntValue());
 
-        m_intValue.setValue([](int& state) {
-            state = 3;
-            std::cout << "effect: set value to 3" << std::endl;
-        });
+        m_intValue.setValue([](int& state) { state = 3; });
         assert(m_intValue == 3 && m_intValue == m_model.stateIntValue());
+
+        m_intValue = 2;
+        m_intValue = m_intValue.value() + 2;
+        assert(m_intValue == 4 && m_intValue == m_model.stateIntValue());
     }
 };
 

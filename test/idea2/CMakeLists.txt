@@ -1,7 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/src/idea2)
 
-add_executable(idea2
-    ./main.cpp 
+set(SOURCE_FILES 
     ${CMAKE_SOURCE_DIR}/src/idea2/factory/stateFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/idea2/factory/stateGroupFactory.cpp
     ${CMAKE_SOURCE_DIR}/src/idea2/state/stateInterface.cpp
@@ -10,4 +9,12 @@ add_executable(idea2
     ${CMAKE_SOURCE_DIR}/src/idea2/storage/stateStorage.cpp
 )
 
-add_test(NAME idea2 COMMAND idea2)
+macro(test name)
+    add_executable(${name} ./${name}.cpp ${SOURCE_FILES})
+    add_test(NAME ${name} COMMAND ${name})
+endmacro()
+
+test(main)
+test(comparison_operator)
+test(binding)
+test(onChange)

@@ -62,9 +62,26 @@ public:
         group.fireOnChangeOfAllStates(value(), prevValue);
     }
 
-    operator const T&() const {
+    // ---------------------------------------------------
+    // Conversion operator
+    // ---------------------------------------------------
+
+    explicit operator const T&() const {
         return value();
     }
+
+    // ---------------------------------------------------
+    // Assignment operator
+    // ---------------------------------------------------
+
+    State<T>& operator=(const T& _value) {
+        setValue(_value);
+        return *this;
+    }
+
+    // ---------------------------------------------------
+    // Comparison operators
+    // ---------------------------------------------------
 
     bool operator==(const State<T>& other) const {
         return value() == other.value();
@@ -74,12 +91,68 @@ public:
         return value() != other.value();
     }
 
-    bool operator==(const T& val) const {
-        return value() == val;
+    bool operator<(const State<T>& other) const {
+        return value() < other.value();
     }
 
-    bool operator!=(const T& val) const {
-        return value() != val;
+    bool operator<=(const State<T>& other) const {
+        return value() <= other.value();
+    }
+
+    bool operator>(const State<T>& other) const {
+        return value() > other.value();
+    }
+
+    bool operator>=(const State<T>& other) const {
+        return value() >= other.value();
+    }
+
+    bool operator==(const T& _value) const {
+        return value() == _value;
+    }
+
+    bool operator!=(const T& _value) const {
+        return value() != _value;
+    }
+
+    bool operator<(const T& _value) const {
+        return value() < _value;
+    }
+
+    bool operator<=(const T& _value) const {
+        return value() <= _value;
+    }
+
+    bool operator>(const T& _value) const {
+        return value() > _value;
+    }
+
+    bool operator>=(const T& _value) const {
+        return value() >= _value;
+    }
+
+    friend bool operator==(const T& value, const State<T>& state) {
+        return value == state.value();
+    }
+
+    friend bool operator!=(const T& value, const State<T>& state) {
+        return value != state.value();
+    }
+
+    friend bool operator<(const T& value, const State<T>& state) {
+        return value < state.value();
+    }
+
+    friend bool operator<=(const T& value, const State<T>& state) {
+        return value <= state.value();
+    }
+
+    friend bool operator>(const T& value, const State<T>& state) {
+        return value > state.value();
+    }
+
+    friend bool operator>=(const T& value, const State<T>& state) {
+        return value >= state.value();
     }
 
 private:
@@ -108,13 +181,3 @@ private:
         }
     }
 };
-
-template <typename T>
-bool operator==(const T& value, const State<T>& state) {
-    return value == state.value();
-}
-
-template <typename T>
-bool operator!=(const T& value, const State<T>& state) {
-    return value != state.value();
-}

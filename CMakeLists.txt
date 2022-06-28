@@ -19,5 +19,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ../bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ../bin)
 
-add_subdirectory("test/idea1")
 add_subdirectory("test/idea2")

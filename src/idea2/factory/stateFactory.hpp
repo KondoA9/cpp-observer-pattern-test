@@ -13,7 +13,7 @@ namespace Internal {
 
     public:
         template <typename T>
-        static StateImpl<T>& Create(const T& value = T()) {
+        static StateImpl<T>& Create(const T& value) {
             auto& stateGroup = Internal::StateGroupFactory::Create<T>(value);
             const auto state =
                 std::shared_ptr<StateImpl<T>>(new StateImpl<T>(Instance().m_id++, stateGroup.stateGroupId()));
